@@ -1,28 +1,25 @@
-# AstrBot × MaiBot × AIRI 三合一融合架构
+# AstrBot × MaiBot × AIRI × MemPalace 四合一融合架构
 
-> MaiBot 是灵魂，AIRI 是化身，AstrBot 是身体 —— 一个有温度、有记忆、有技能、有形象的完整数字生命。
+> MaiBot 是灵魂，AIRI 是化身，AstrBot 是身体，MemPalace 是记忆宫殿 —— 一个有温度、有记忆、有技能、有形象的完整数字生命。
 
 ## 核心理念
 
-```
-MaiBot (灵魂)              AIRI (化身)            AstrBot (身体)
-─────────────              ─────────              ─────────────
-"怎么说"                   "怎么表现"             "怎么做"
-人格系统                    视觉形象               记忆系统
-对话风格                    Live2D/VRM             知识库 (RAG)
-情感模型                    语音合成/识别           Skills
-氛围感知                    游戏能力               工具执行
-表达学习                    多端渲染               多平台路由
-发言时机                    口型同步               插件生态
-                           直播能力               MCP Hub
-```
+| 维度 | 负责者 | 说明 |
+|------|--------|------|
+| **怎么说** (Personality) | MaiBot | 人格、语气、情感、氛围感知 |
+| **怎么表现** (Embodiment) | AIRI | 视觉形象、语音、动画、游戏 |
+| **怎么做到** (Capability) | AstrBot | 技能、工具、平台路由、插件生态 |
+| **怎么记** (Memory) | MemPalace | 记忆宫殿、知识图谱、语义检索 |
+
+## 四大项目
+
+| 项目 | Star | 语言 | 核心能力 |
+|------|------|------|----------|
+| [MemPalace](https://github.com/mempalace/mempalace) | 55.5k | Python | 记忆系统标杆，96.6% R@5，29 MCP 工具 |
+| [AIRI](https://github.com/moeru-ai/airi) | 40.9k | TypeScript | 数字化身，Live2D/VRM，游戏，多端 |
+| [AstrBot](https://github.com/AstrBotDevs/AstrBot) | 34.6k | Python | Agent 平台，18+ 平台，1000+ 插件 |
+| [MaiBot](https://github.com/Mai-with-u/MaiBot) | 5.1k | Python | 拟人化数字生命，"最像而不是好" |
 
 ## 详细设计
 
 👉 [ARCHITECTURE.md](./ARCHITECTURE.md)
-
-## 相关项目
-
-- [AstrBotDevs/AstrBot](https://github.com/AstrBotDevs/AstrBot) — AI Agent 聊天机器人平台 (34.6k ⭐)
-- [Mai-with-u/MaiBot](https://github.com/Mai-with-u/MaiBot) — 拟人化数字生命 Agent (5.1k ⭐)
-- [moeru-ai/airi](https://github.com/moeru-ai/airi) — 自托管 AI 伙伴 / 虚拟生命体 (40.9k ⭐)
