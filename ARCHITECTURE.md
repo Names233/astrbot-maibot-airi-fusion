@@ -1,6 +1,7 @@
-# AstrBot × MaiBot × AIRI × MemPalace 四合一融合架构
+# Digital Genesis — AstrBot × MaiBot × AIRI × Hermes × MemPalace 五合一融合架构
 
-> MaiBot 是灵魂，AIRI 是化身，AstrBot 是身体，MemPalace 是记忆宫殿 —— 完整的数字生命。
+> MaiBot 是灵魂，AIRI 是化身，AstrBot 是大脑，Hermes 是双手，MemPalace 是记忆
+> —— 创世，让数字生命降临。
 
 ## 核心理念
 
@@ -8,7 +9,8 @@
 |------|--------|------|
 | **怎么说** (Personality) | MaiBot | 人格、语气、情感、氛围感知 |
 | **怎么表现** (Embodiment) | AIRI | 视觉形象、语音、动画、游戏 |
-| **怎么做到** (Capability) | AstrBot | 技能、工具、平台路由、插件生态 |
+| **怎么决策** (Decision) | AstrBot | 大脑中枢、平台路由、任务调度、插件生态 |
+| **怎么做到** (Execution) | Hermes | 技术执行、代码、部署、运维、调研、文件操作 |
 | **怎么记** (Memory) | MemPalace | 记忆宫殿、知识图谱、语义检索 |
 
 ```
@@ -19,24 +21,28 @@
                         │
                         ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│                AstrBot (能力层 / Backend)                         │
+│                AstrBot (大脑层 / Decision Hub)                    │
 │                                                                   │
-│   平台路由 │ Skills │ 工具执行 │ 插件生态 │ MCP Hub              │
-└───────────┬──────────────────────────────────────────────────────┘
-            │ MCP
-            ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                MaiBot (灵魂层 / Personality)                      │
+│   决策中枢 │ 平台路由 │ 任务调度 │ Skills │ 插件生态 │ MCP Hub   │
 │                                                                   │
-│   推理引擎 │ 人格系统 │ 情感模型 │ 氛围感知 │ 表达学习            │
-└───────────┬──────────────────────────────────────────────────────┘
-            │ MCP / WebSocket
-            ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                AIRI (化身层 / Embodiment)                         │
-│                                                                   │
-│   Live2D/VRM │ TTS/STT │ 口型同步 │ 游戏Agent │ 多端渲染         │
-└──────────────────────────────────────────────────────────────────┘
+│   判断任务类型 → 路由到合适的 Agent                                │
+│   ├── 闲聊/情感    → MaiBot (灵魂)                               │
+│   ├── 视觉/语音    → AIRI (化身)                                  │
+│   ├── 技术执行     → Hermes (双手)                                │
+│   └── 所有路径     → MemPalace (记忆)                             │
+└───────┬──────────────┬──────────────┬────────────────────────────┘
+        │              │              │
+        ▼              ▼              ▼
+┌──────────────┐ ┌──────────────┐ ┌──────────────────────────────┐
+│  MaiBot      │ │    AIRI      │ │         Hermes               │
+│  (灵魂层)    │ │  (化身层)    │ │        (执行层)              │
+│              │ │              │ │                               │
+│ 推理引擎     │ │ Live2D/VRM   │ │ Terminal │ File │ Web Search │
+│ 人格系统     │ │ TTS/STT      │ │ Code Exec │ Deploy │ Ops    │
+│ 情感模型     │ │ 口型同步     │ │ 子任务委派 │ 项目管理        │
+│ 氛围感知     │ │ 游戏Agent    │ │                               │
+│ 表达学习     │ │ 多端渲染     │ │ MCP Server (7 tools)         │
+└──────────────┘ └──────────────┘ └──────────────────────────────┘
 
                         ▲ 全局共享 ▲
 ┌──────────────────────────────────────────────────────────────────┐
@@ -50,9 +56,108 @@
 
 ---
 
-## 一、四个项目各自的能力
+## 一、五个项目各自的能力
 
-### 1.1 MemPalace — 记忆层 (新增)
+### 1.1 AstrBot — 大脑层 (Decision Hub)
+
+仓库: https://github.com/AstrBotDevs/AstrBot
+Star: 34.9k | Python 3.10+ | License: AGPL-3.0 | 版本: v4.25.5
+
+AstrBot 是整个数字生命的**大脑和决策中枢**。它不只是聊天机器人平台，而是一个完整的 Agent 运行时，负责理解用户意图、判断任务类型、路由到合适的执行者。
+
+| 模块 | 职责 |
+|------|------|
+| **决策中枢** | 分析用户意图，判断任务类型，选择执行路径 |
+| **平台路由** | QQ/微信/TG/Discord/飞书/钉钉 等 18+ 平台消息收发 |
+| **Sub-Agent 调度** | 通过 HandoffTool 将任务委托给 MaiBot / AIRI / Hermes |
+| **MCP Hub** | MCP 协议连接外部工具服务 (MemPalace, Hermes 等) |
+| **Skills** | 技能管理、注册、执行 |
+| **插件生态** | 1000+ 插件的加载和管理 |
+| **Agent Sandbox** | 隔离安全执行代码、Shell 调用 |
+| **会话管理** | 多轮对话上下文管理、自动压缩 |
+
+**AstrBot 的决策流程:**
+
+```
+用户消息进入
+  │
+  ├─ 判断: 闲聊/情感/氛围感知 → 调用 MaiBot (人格回复)
+  │    └─ MaiBot 返回拟人化回复 → AstrBot 发送到平台
+  │
+  ├─ 判断: 需要视觉/语音/游戏 → 调用 AIRI (化身表现)
+  │    └─ AIRI 执行动画/语音/游戏操作
+  │
+  ├─ 判断: 技术任务(代码/部署/运维/调研) → 调用 Hermes (执行)
+  │    └─ Hermes 执行完毕 → 通过 AstrBot 发送结果到平台
+  │
+  └─ 所有路径 → MemPalace (读写记忆、更新知识图谱)
+```
+
+### 1.2 MaiBot — 灵魂层 (Personality)
+
+仓库: https://github.com/Mai-with-u/MaiBot
+Star: 5.1k | Python 3.10+ | License: GPL-3.0
+
+| 模块 | 职责 |
+|------|------|
+| 推理引擎 | 决定是否回复、用什么语气回复 |
+| 人格系统 | 角色设定、说话风格、性格特征 |
+| 氛围感知 | 判断群聊气氛，决定发言时机 |
+| 表达学习 | 学习用户的说话方式并模仿 |
+| 行为学习 | 学习用户的行为模式 |
+| 术语挖掘 | 理解圈子黑话和新词 |
+| 用户画像 | 累积对用户的了解 |
+
+设计理念: "最像而不是好"
+
+### 1.3 AIRI — 化身层 (Embodiment)
+
+仓库: https://github.com/moeru-ai/airi
+Star: 40.9k | TypeScript | License: MIT | 版本: v0.10.2
+
+| 模块 | 职责 |
+|------|------|
+| Agent 运行时 | Agent 编排、对话管理 |
+| Live2D/VRM | 视觉形象渲染和动画 |
+| TTS/STT | 语音合成 (ElevenLabs/Azure/OpenAI/Kokoro) + 语音识别 |
+| 口型同步 | 语音驱动口型动画 |
+| 游戏 Agent | Minecraft、Factorio、KSP |
+| 多端渲染 | Web (PWA)、桌面 (Electron)、移动端 (Capacitor) |
+
+### 1.4 Hermes — 执行层 (Hands)
+
+仓库: https://github.com/NousResearch/hermes-agent
+文档: https://hermes-agent.nousresearch.com/docs
+License: Custom
+
+Hermes 是数字生命的**双手**——负责实际的技术操作。当 AstrBot 判断某个任务需要代码编写、服务器部署、文件操作、网络调研等技术执行时，会将任务委托给 Hermes。
+
+| 模块 | 职责 |
+|------|------|
+| Terminal | 执行 Shell 命令、管理后台进程 |
+| File Operations | 读写文件、搜索、补丁 |
+| Web Search | 互联网搜索、网页内容提取 |
+| Code Execution | Python 代码执行、脚本运行 |
+| Browser | 网页交互、截图、表单填写 |
+| Sub-Agent Delegation | 将复杂任务委派给子 Agent |
+| Skill System | 可复用的技能库（持久化过程记忆） |
+| Memory | 跨会话持久记忆 |
+| Cron/Scheduling | 定时任务调度 |
+
+**Hermes 暴露的 MCP 工具:**
+
+| MCP 工具 | 功能 |
+|----------|------|
+| `hermes_terminal` | 执行 shell 命令，支持前台/后台、超时、工作目录 |
+| `hermes_file_read` | 读取文件内容，支持分页 |
+| `hermes_file_write` | 写入文件，自动创建父目录 |
+| `hermes_search_files` | 搜索文件内容或按名称查找文件 |
+| `hermes_web_search` | 互联网搜索 |
+| `hermes_web_extract` | 提取网页/PDF 内容为 Markdown |
+| `hermes_code_exec` | 执行 Python 代码，可调用其他工具 |
+| `hermes_delegate` | 将子任务委派给独立的子 Agent |
+
+### 1.5 MemPalace — 记忆层 (Memory Palace)
 
 仓库: https://github.com/mempalace/mempalace
 Star: 55.5k | Python 3.9+ | License: MIT | 版本: v3.4.0
@@ -120,91 +225,174 @@ mempalace_sync             # 同步项目文件
 mempalace_hook_settings    # 自动保存设置
 ```
 
-### 1.2 AstrBot — 能力层
+---
 
-仓库: https://github.com/AstrBotDevs/AstrBot
-Star: 34.6k | Python 3.10+ | 版本: v4.25.5
+## 二、Hermes 接入架构
 
-| 模块 | 职责 |
-|------|------|
-| 平台路由 | QQ/微信/TG/Discord 等 18+ 平台消息收发 |
-| Skills | 技能管理、注册、执行 |
-| 工具执行 | Agent 工具调用和沙箱执行 |
-| MCP Hub | MCP 协议连接外部工具服务 |
-| 插件生态 | 1000+ 插件的加载和管理 (Stars) |
-| 会话管理 | 多轮对话上下文管理 |
+### 2.1 接入方式: MCP 工具层 + HandoffTool 调度层
 
-### 1.3 MaiBot — 灵魂层
+Hermes 的接入采用**方案 c: 双层架构**：
 
-仓库: https://github.com/Mai-with-u/MaiBot
-Star: 5.1k | Python 3.10+ | License: GPL-3.0
+```
+┌─────────────────────────────────────────────────────────┐
+│                    AstrBot (大脑)                        │
+│                                                         │
+│   SubAgentOrchestrator                                  │
+│     └── HandoffTool: transfer_to_hermes                 │
+│           ├── description: "技术执行任务委托给Hermes"     │
+│           ├── system_prompt: "你是技术执行者..."          │
+│           ├── tools: ["hermes_*"]                        │
+│           └── background_task: true                      │
+│                                                         │
+│   FunctionToolManager                                   │
+│     └── MCP Client → Hermes MCP Server                  │
+│           ├── hermes_terminal                            │
+│           ├── hermes_file_read                           │
+│           ├── hermes_file_write                          │
+│           ├── hermes_search_files                        │
+│           ├── hermes_web_search                          │
+│           ├── hermes_web_extract                         │
+│           ├── hermes_code_exec                           │
+│           └── hermes_delegate                            │
+└─────────────────────────────────────────────────────────┘
+                        │
+                        │ MCP (stdio/SSE)
+                        ▼
+┌─────────────────────────────────────────────────────────┐
+│                    Hermes (执行者)                        │
+│                                                         │
+│   MCP Server                                            │
+│     ├── 暴露 8 个工具给 AstrBot                          │
+│     ├── 内部调用 Hermes 完整工具链                        │
+│     └── 结果返回给 AstrBot                               │
+│                                                         │
+│   反向调用                                              │
+│     └── Hermes → MCP → AstrBot.send_message()           │
+│         (执行完毕后通过 AstrBot 发送结果到聊天平台)       │
+└─────────────────────────────────────────────────────────┘
+```
 
-| 模块 | 职责 |
-|------|------|
-| 推理引擎 | 决定是否回复、用什么语气回复 |
-| 人格系统 | 角色设定、说话风格、性格特征 |
-| 氛围感知 | 判断群聊气氛，决定发言时机 |
-| 表达学习 | 学习用户的说话方式并模仿 |
-| 行为学习 | 学习用户的行为模式 |
-| 术语挖掘 | 理解圈子黑话和新词 |
-| 用户画像 | 累积对用户的了解 |
+**为什么用方案 c:**
 
-设计理念: "最像而不是好"
+| 层 | 作用 | 优势 |
+|----|------|------|
+| MCP 工具层 | Hermes 暴露工具接口 | 标准协议、安全白名单、进程隔离 |
+| HandoffTool 调度层 | AstrBot 将 Hermes 注册为 Sub-Agent | 保持 Agent 自主性、支持多步推理、background_task |
 
-### 1.4 AIRI — 化身层
+### 2.2 AstrBot 端注册配置
 
-仓库: https://github.com/moeru-ai/airi
-Star: 40.9k | TypeScript | License: MIT | 版本: v0.10.2
+```yaml
+# AstrBot Sub-Agent 配置
 
-| 模块 | 职责 |
-|------|------|
-| Agent 运行时 | Agent 编排、对话管理 |
-| Live2D/VRM | 视觉形象渲染和动画 |
-| TTS/STT | 语音合成 (ElevenLabs/Azure/OpenAI/Kokoro) + 语音识别 |
-| 口型同步 | 语音驱动口型动画 |
-| 游戏 Agent | Minecraft、Factorio、KSP |
-| 多端渲染 | Web (PWA)、桌面 (Electron)、移动端 (Capacitor) |
+subagent:
+  agents:
+    - name: "hermes"
+      enabled: true
+      public_description: "技术执行专家：代码编写、服务器部署、运维操作、网络调研、文件管理。当用户需要实际执行技术任务时委托给 Hermes。"
+      system_prompt: |
+        你是 Hermes，数字生命的技术执行者。
+        你负责实际完成技术操作：编写代码、部署服务、管理文件、搜索信息。
+        
+        能力:
+        - 执行任意 Shell 命令
+        - 读写和搜索文件
+        - 运行 Python 代码
+        - 搜索互联网、提取网页内容
+        - 将复杂任务委派给子 Agent
+        
+        工作方式:
+        1. 接收任务描述
+        2. 规划执行步骤
+        3. 使用工具逐步完成
+        4. 返回执行结果
+        
+        注意: 你执行完任务后，结果会通过 AstrBot 发送给用户。
+      tools:
+        - "hermes_terminal"
+        - "hermes_file_read"
+        - "hermes_file_write"
+        - "hermes_search_files"
+        - "hermes_web_search"
+        - "hermes_web_extract"
+        - "hermes_code_exec"
+        - "hermes_delegate"
+```
+
+### 2.3 Hermes MCP Server 配置
+
+```python
+# hermes_mcp_server.py
+# Hermes 作为 MCP Server，暴露工具给 AstrBot
+
+from mcp import Server
+from mcp.types import Tool, TextContent
+
+server = Server("hermes")
+
+@server.tool()
+async def hermes_terminal(command: str, workdir: str = None, timeout: int = 180) -> str:
+    """执行 Shell 命令"""
+    # 调用 Hermes 内部 terminal 工具
+    result = await hermes_internal.terminal(command, workdir=workdir, timeout=timeout)
+    return result["output"]
+
+@server.tool()
+async def hermes_file_read(path: str, offset: int = 1, limit: int = 500) -> str:
+    """读取文件内容"""
+    result = await hermes_internal.read_file(path, offset=offset, limit=limit)
+    return result["content"]
+
+@server.tool()
+async def hermes_file_write(path: str, content: str) -> str:
+    """写入文件"""
+    result = await hermes_internal.write_file(path, content)
+    return f"Written to {path}"
+
+@server.tool()
+async def hermes_search_files(pattern: str, path: str = ".", target: str = "content") -> str:
+    """搜索文件内容或名称"""
+    result = await hermes_internal.search_files(pattern, path=path, target=target)
+    return str(result["matches"])
+
+@server.tool()
+async def hermes_web_search(query: str, limit: int = 5) -> str:
+    """搜索互联网"""
+    result = await hermes_internal.web_search(query, limit=limit)
+    return str(result["data"]["web"])
+
+@server.tool()
+async def hermes_web_extract(urls: list[str]) -> str:
+    """提取网页内容"""
+    result = await hermes_internal.web_extract(urls)
+    return str(result["results"])
+
+@server.tool()
+async def hermes_code_exec(code: str) -> str:
+    """执行 Python 代码"""
+    result = await hermes_internal.execute_code(code)
+    return result["output"]
+
+@server.tool()
+async def hermes_delegate(goal: str, context: str = "") -> str:
+    """将子任务委派给独立子 Agent"""
+    result = await hermes_internal.delegate_task(goal=goal, context=context)
+    return result["summary"]
+
+# 反向调用: Hermes → AstrBot
+@server.tool()
+async def hermes_reply_to_chat(message: str, platform: str, target: str) -> str:
+    """通过 AstrBot 发送消息到聊天平台"""
+    result = await astrbot_mcp_client.call_tool("send_message", {
+        "platform": platform,
+        "target": target,
+        "message": message
+    })
+    return "sent"
+```
 
 ---
 
-## 二、为什么需要 MemPalace
-
-### AstrBot 原有记忆的局限
-
-| 维度 | AstrBot 原生记忆 | MemPalace |
-|------|-----------------|-----------|
-| 存储方式 | SQLite 基础存储 | 逐字存储，不丢失细节 |
-| 检索精度 | 单一向量搜索 | BM25 + 向量混合，96.6% R@5 |
-| 组织结构 | 扁平列表 | Wings → Rooms → Drawers 层级结构 |
-| 知识图谱 | 无 | 时序实体-关系图谱，带有效期 |
-| Agent 记忆 | 共用一个池 | 每个 Agent 独立 Wing + Diary |
-| 会话挖掘 | 无 | 自动从多平台导入对话 |
-| 去重 | 基础 | 碰撞扫描 + 语义去重 |
-| 跨关联 | 无 | 隧道 (Tunnels) 连接不同翼楼 |
-| 基准测试 | 未公开 | LongMemEval 96.6%, LoCoMo 88.9% |
-
-### MemPalace 在融合架构中的角色
-
-```
-所有对话 ──→ MemPalace 会话挖掘 ──→ 结构化存储
-                                        │
-MaiBot 推理时 ◄── mempalace_search ────┘
-    "用户之前说过什么？"
-    "用户喜欢什么？"
-    "上次聊到哪了？"
-
-AstrBot 执行技能时 ◄── mempalace_kg_query ──┘
-    "用户的技术栈是什么？"
-    "这个项目的上下文？"
-
-AIRI 游戏时 ◄── mempalace_diary_read ──┘
-    "上次玩到哪了？"
-    "用户的策略偏好？"
-```
-
----
-
-## 三、四系统 MCP 通信拓扑
+## 三、五系统 MCP 通信拓扑
 
 ```
                     ┌─────────────────┐
@@ -213,309 +401,51 @@ AIRI 游戏时 ◄── mempalace_diary_read ──┘
                     │   (29 tools)    │
                     └────────┬────────┘
                              │ MCP (stdio/SSE)
-              ┌──────────────┼──────────────┐
-              ▼              ▼              ▼
-     ┌────────────┐  ┌────────────┐  ┌────────────┐
-     │  AstrBot   │  │   MaiBot   │  │    AIRI    │
-     │  MCP Hub   │  │  MCP Hub   │  │  MCP Client│
-     └────────────┘  └────────────┘  └────────────┘
+         ┌───────────┬───────┼───────┬───────────┐
+         ▼           ▼       ▼       ▼           ▼
+    ┌─────────┐ ┌────────┐ ┌─────┐ ┌─────────┐ ┌─────────┐
+    │ AstrBot │ │ MaiBot │ │AIRI │ │ Hermes  │ │         │
+    │ MCP Hub │ │MCP Hub │ │MCP  │ │ MCP Srv │ │         │
+    └────┬────┘ └────────┘ └─────┘ └────┬────┘ └─────────┘
+         │                               │
+         │  AstrBot ──MCP──► Hermes      │
+         │  (调用技术工具/委托任务)       │
+         │                               │
+         │  AstrBot ──MCP──► MaiBot      │
+         │  (调用人格推理)               │
+         │                               │
+         │  AstrBot ──MCP──► AIRI        │
+         │  (调用化身表现)               │
+         │                               │
+         │  Hermes ──MCP──► AstrBot      │
+         │  (发送消息到平台)             │
 ```
 
 **MCP 连接关系:**
 
 ```
 AstrBot  ──MCP──► MemPalace    (记忆读写)
-AstrBot  ──MCP──► MaiBot       (灵魂调用)
-MaiBot   ──MCP──► AstrBot      (能力调用)
+AstrBot  ──MCP──► MaiBot       (人格推理)
+AstrBot  ──MCP──► AIRI         (化身表现)
+AstrBot  ──MCP──► Hermes       (技术执行)
 MaiBot   ──MCP──► MemPalace    (记忆读写)
-AIRI     ──MCP──► MaiBot       (人格调用)
-AIRI     ──MCP──► AstrBot      (工具调用)
 AIRI     ──MCP──► MemPalace    (记忆读写)
+Hermes   ──MCP──► MemPalace    (记忆读写)
+Hermes   ──MCP──► AstrBot      (发送消息到平台)
 ```
 
-每个系统都直接连接 MemPalace，不经过中间层，最小化延迟。
+每个系统都直连 MemPalace，不经过中间层，最小化延迟。AstrBot 作为中枢，是唯一同时连接所有其他系统的节点。
 
 ---
 
-## 四、AstrBot MCP Server (更新版)
-
-移除内置记忆，改为调用 MemPalace:
-
-```python
-# astrbot_mcp_server.py
-
-from astrbot.core.star import Star, Context
-
-class AstrBotMCPServer(Star):
-    """AstrBot 能力通过 MCP 暴露，记忆委托给 MemPalace"""
-
-    def __init__(self, mempalace_endpoint: str):
-        self.mempalace = MCPClient(mempalace_endpoint)
-
-    # ─── 记忆: 委托给 MemPalace ───
-
-    @Tool("memory_search")
-    async def memory_search(self, query: str, wing: str = None, top_k: int = 5) -> dict:
-        """搜索记忆 (委托 MemPalace)"""
-        return await self.mempalace.call_tool("mempalace_search", {
-            "query": query, "wing": wing, "n_results": top_k
-        })
-
-    @Tool("memory_save")
-    async def memory_save(self, content: str, wing: str, room: str = None) -> dict:
-        """保存记忆 (委托 MemPalace)"""
-        return await self.mempalace.call_tool("mempalace_add_drawer", {
-            "content": content, "wing": wing, "room": room
-        })
-
-    @Tool("knowledge_graph_query")
-    async def knowledge_graph_query(self, entity: str, as_of: str = None) -> dict:
-        """查询知识图谱 (委托 MemPalace)"""
-        return await self.mempalace.call_tool("mempalace_kg_query", {
-            "entity": entity, "as_of": as_of
-        })
-
-    # ─── Skills (AstrBot 原生) ───
-
-    @Tool("skill_execute")
-    async def skill_execute(self, skill_name: str, params: dict = None) -> dict:
-        result = await self.context.skill_mgr.execute(skill_name, params or {})
-        return {"result": result}
-
-    # ─── 工具 (AstrBot 原生) ───
-
-    @Tool("tool_call")
-    async def tool_call(self, tool_name: str, arguments: dict) -> dict:
-        result = await self.context.tool_mgr.call(tool_name, arguments)
-        return {"result": result}
-
-    # ─── 平台 (AstrBot 原生) ───
-
-    @Tool("send_message")
-    async def send_message(self, platform: str, target: str, message: str) -> dict:
-        await self.context.send_message(platform, target, message)
-        return {"status": "sent"}
-```
-
----
-
-## 五、MaiBot 推理引擎改造 (集成 MemPalace)
-
-```python
-# fusion_reasoning_engine.py
-
-class FusionReasoningEngine(MaisakaReasoningEngine):
-
-    def __init__(self, astrbot_bridge, mempalace_client, **kwargs):
-        super().__init__(**kwargs)
-        self.astrbot = astrbot_bridge
-        self.memory = mempalace_client  # 直连 MemPalace
-
-    async def reason(self, message: SessionMessage) -> ChatResponse:
-
-        # 1. 【MaiBot 灵魂】判断是否要回复
-        should_reply = self._evaluate_should_reply(message)
-        if not should_reply:
-            return ChatResponse.no_reply()
-
-        # 2. 【MemPalace 记忆】检索相关记忆
-        memories = await self.memory.call_tool("mempalace_search", {
-            "query": message.text,
-            "wing": message.sender_id,  # 按用户翼楼搜索
-            "n_results": 5
-        })
-
-        # 3. 【MemPalace 知识图谱】查询用户实体关系
-        user_kg = await self.memory.call_tool("mempalace_kg_query", {
-            "entity": message.sender_name,
-            "as_of": datetime.now().isoformat()
-        })
-
-        # 4. 【MaiBot 灵魂】构建人格化 prompt
-        prompt = self._build_persona_prompt(
-            message=message,
-            memories=memories,           # MemPalace 提供的记忆
-            knowledge_graph=user_kg,     # MemPalace 提供的图谱
-            chat_context=message.context,
-        )
-
-        # 5. 【MaiBot 灵魂】生成拟人化回复
-        response = await self._generate_with_persona(prompt)
-
-        # 6. 【AstrBot 能力】需要时调用技能/工具
-        if response.needs_tool:
-            tool_result = await self.astrbot.call_tool(
-                response.tool_name, response.tool_args
-            )
-            response = await self._integrate_tool_result(response, tool_result)
-
-        # 7. 【MaiBot 灵魂】后处理
-        response = self._apply_mood_and_emoji(response)
-
-        # 8. 【MemPalace 记忆】保存对话到记忆宫殿
-        await self.memory.call_tool("mempalace_add_drawer", {
-            "content": f"用户({message.sender_name}): {message.text}\n"
-                       f"我: {response.text}",
-            "wing": message.sender_id,
-            "room": message.topic or "general"
-        })
-
-        # 9. 【MemPalace 知识图谱】更新实体关系
-        if response.extracted_facts:
-            for fact in response.extracted_facts:
-                await self.memory.call_tool("mempalace_kg_add", {
-                    "subject": fact.subject,
-                    "predicate": fact.predicate,
-                    "object": fact.object,
-                })
-
-        # 10. 【MemPalace 日记】写入 Agent 日记
-        await self.memory.call_tool("mempalace_diary_write", {
-            "agent_name": "maisaka",
-            "entry": f"对 {message.sender_name} 说了: {response.text[:100]}",
-            "topic": message.topic or "general"
-        })
-
-        return response
-```
-
----
-
-## 六、AIRI 双桥接 (更新版)
-
-```typescript
-// airi_bridge.ts
-
-export class AIRIBridge {
-  private maiBot: MCPClient     // 灵魂层
-  private astrBot: MCPClient    // 能力层
-  private memPalace: MCPClient  // 记忆层
-
-  async connect(config: BridgeConfig) {
-    this.maiBot = new MCPClient({ url: config.maiBotEndpoint })
-    this.astrBot = new MCPClient({ url: config.astrBotEndpoint })
-    this.memPalace = new MCPClient({ url: config.memPalaceEndpoint })
-    await Promise.all([
-      this.maiBot.connect(),
-      this.astrBot.connect(),
-      this.memPalace.connect()
-    ])
-  }
-
-  // ─── 灵魂: 调用 MaiBot ───
-
-  async generateReply(context: string, sender: string): Promise<ReplyResult> {
-    return await this.maiBot.callTool('generate_reply', { context, sender })
-  }
-
-  async shouldReply(message: string, context: Message[]): Promise<boolean> {
-    const r = await this.maiBot.callTool('evaluate_should_reply', { message, context })
-    return r.should_reply
-  }
-
-  // ─── 记忆: 直连 MemPalace ───
-
-  async recallMemory(query: string, wing?: string): Promise<Memory[]> {
-    const r = await this.memPalace.callTool('mempalace_search', {
-      query, wing, n_results: 5
-    })
-    return r.results
-  }
-
-  async saveMemory(content: string, wing: string, room?: string): Promise<void> {
-    await this.memPalace.callTool('mempalace_add_drawer', { content, wing, room })
-  }
-
-  async queryKnowledgeGraph(entity: string): Promise<KGResult> {
-    return await this.memPalace.callTool('mempalace_kg_query', { entity })
-  }
-
-  async readAgentDiary(agentName: string): Promise<DiaryEntry[]> {
-    const r = await this.memPalace.callTool('mempalace_diary_read', {
-      agent_name: agentName, last_n: 10
-    })
-    return r.entries
-  }
-
-  async writeAgentDiary(agentName: string, entry: string): Promise<void> {
-    await this.memPalace.callTool('mempalace_diary_write', {
-      agent_name: agentName, entry
-    })
-  }
-
-  // ─── 能力: 调用 AstrBot ───
-
-  async useSkill(skillName: string, params: object): Promise<object> {
-    const r = await this.astrBot.callTool('skill_execute', { skill_name: skillName, params })
-    return r.result
-  }
-
-  // ─── 化身: 本地能力 ───
-
-  async speak(text: string, mood: string): Promise<void> {
-    const audio = await this.tts.synthesize(text, { mood })
-    await this.lipsync.play(audio)
-  }
-
-  async express(emoji: string): Promise<void> {
-    await this.avatar.setExpression(emoji)
-  }
-}
-```
-
----
-
-## 七、MemPalace 翼楼规划
-
-```
-Palace (数字生命记忆宫殿)
-├── wings/
-│   ├── users/                    # 用户翼楼 (按用户ID)
-│   │   ├── user_123/
-│   │   │   ├── preferences/      # 房间: 偏好
-│   │   │   ├── conversations/    # 房间: 对话历史
-│   │   │   ├── emotions/         # 房间: 情感事件
-│   │   │   └── facts/            # 房间: 事实信息
-│   │   └── user_456/
-│   │       └── ...
-│   │
-│   ├── groups/                   # 群组翼楼 (按群ID)
-│   │   ├── group_789/
-│   │   │   ├── culture/          # 房间: 群文化/黑话
-│   │   │   ├── topics/           # 房间: 讨论话题
-│   │   │   └── events/           # 房间: 群事件
-│   │   └── ...
-│   │
-│   ├── maisaka/                  # Agent 翼楼 (MaiBot 自身)
-│   │   ├── diary/                # 房间: Agent 日记
-│   │   ├── learned_expressions/  # 房间: 学到的表达
-│   │   └── mood_history/         # 房间: 情绪历史
-│   │
-│   ├── airi/                     # Agent 翼楼 (AIRI 自身)
-│   │   ├── diary/                # 房间: Agent 日记
-│   │   ├── game_progress/        # 房间: 游戏进度
-│   │   └── stream_history/       # 房间: 直播历史
-│   │
-│   └── knowledge/                # 知识翼楼
-│       ├── general/              # 房间: 通用知识
-│       ├── technical/            # 房间: 技术知识
-│       └── user_shared/          # 房间: 用户共享的知识
-│
-└── knowledge_graph/              # 知识图谱 (时序实体关系)
-    ├── entities: [用户, 项目, 工具, 概念...]
-    └── relationships: [喜欢, 使用, 擅长, 认识...]
-        └── with: valid_from → valid_to
-```
-
----
-
-## 八、数据流示例
+## 四、数据流示例
 
 ### 场景 1: 群聊 + 记忆增强
 
 ```
 用户在QQ群: "推荐个Python框架"
   → AstrBot QQ适配器接收
+  → AstrBot 决策中枢判断: 闲聊/推荐 → 调用 MaiBot
   → MaiBot 推理引擎启动
   → MemPalace search("Python框架", wing="users/用户ID")
     → 返回: 用户3个月前说过在学 FastAPI，上周说觉得 Django 太重
@@ -526,7 +456,34 @@ Palace (数字生命记忆宫殿)
   → AstrBot 发回QQ群
 ```
 
-### 场景 2: 直播 + 游戏 + 记忆
+### 场景 2: 技术任务 + Hermes 执行 (NEW)
+
+```
+用户在Telegram: "帮我在服务器上部署一个 FastAPI 服务"
+  → AstrBot Telegram适配器接收
+  → AstrBot 决策中枢判断: 技术任务 → 调用 Hermes (background_task=true)
+  → Hermes 接收任务: "在服务器上部署 FastAPI 服务"
+  
+  → Hermes 执行步骤:
+    1. hermes_web_search("FastAPI deployment best practices")
+    2. hermes_terminal("ssh user@server 'uname -a'")
+    3. hermes_file_write("main.py", fastapi_code)
+    4. hermes_file_write("Dockerfile", docker_config)
+    5. hermes_terminal("docker build -t fastapi-app .")
+    6. hermes_terminal("docker run -d -p 8000:8000 fastapi-app")
+    7. hermes_terminal("curl http://localhost:8000/health")
+  
+  → Hermes 通过 AstrBot 发送结果:
+    "FastAPI 服务已部署完成 ✅
+     - 地址: http://server:8000
+     - 健康检查: 通过
+     - Docker 容器: running"
+  
+  → MemPalace add_drawer("部署了FastAPI服务", wing="users/xxx", room="technical")
+  → MemPalace kg_add("用户", "使用", "FastAPI")
+```
+
+### 场景 3: 直播 + 游戏 + 记忆
 
 ```
 直播间弹幕: "AIRI继续建上次的城堡"
@@ -541,27 +498,34 @@ Palace (数字生命记忆宫殿)
   → MemPalace diary_write("airi", "继续建城堡，加了塔楼")
 ```
 
-### 场景 3: 跨平台记忆连续
+### 场景 4: 跨平台记忆连续 + 技术执行
 
 ```
 # 周一 QQ 群
-用户: "我最近在准备面试"
-  → MemPalace add_drawer("用户在准备面试", wing="users/xxx", room="life_events")
-  → MemPalace kg_add("用户", "正在做", "准备面试")
-
+用户: "我最近在准备面试，想练算法"
+  → AstrBot 调用 MaiBot → MemPalace add_drawer + kg_add
+  
 # 周三 Telegram
-用户: "给我出道算法题练练"
+用户: "帮我写个 LRU Cache 的 Python 实现，加上测试"
+  → AstrBot 决策中枢判断: 技术任务 → 调用 Hermes
   → MemPalace search("用户技术背景", wing="users/xxx")
     → 返回: 用户擅长 Python，在学 Rust，目标是后端岗位
-  → MemPalace kg_query("用户")
-    → 返回: {用户, 正在做, 准备面试}
-  → MaiBot: "面试加油！给你出个后端常见的：手写 LRU Cache，用 Python 或 Rust 都行"
-  → AstrBot skill_execute("code_challenge", {difficulty: "medium", topic: "lru"})
+  → Hermes 执行:
+    1. hermes_file_write("lru_cache.py", lru_implementation)
+    2. hermes_file_write("test_lru_cache.py", test_cases)
+    3. hermes_terminal("python -m pytest test_lru_cache.py -v")
+    4. hermes_code_exec("验证边界情况")
+  → Hermes 通过 AstrBot 发送:
+    "LRU Cache 实现完成 ✅
+     - lru_cache.py: O(1) get/put，用 OrderedDict
+     - test_lru_cache.py: 12 个测试用例全部通过
+     - 包含边界情况: 容量为0、重复key、访问顺序更新"
+  → AstrBot (MaiBot 人格化包装): "给你写好了，测试全过！面试加油 💪"
 ```
 
 ---
 
-## 九、共享 Soul 配置 (更新版)
+## 五、共享 Soul 配置
 
 ```yaml
 # soul.yaml
@@ -579,14 +543,25 @@ persona:
     voice: { provider: "elevenlabs", speed: 1.0 }
     expressions: { happy: "smile_open", thinking: "eyes_up" }
 
-  capabilities:       # → AstrBot 使用
-    skills: { auto_discover: true }
+  decision:           # → AstrBot 使用
     platforms: [qq, telegram, discord]
+    plugins: { auto_discover: true }
+    subagents:
+      - name: "hermes"
+        trigger: "技术任务、代码、部署、运维、调研、文件操作"
+      - name: "maisaka"
+        trigger: "闲聊、情感、氛围感知"
+
+  execution:          # → Hermes 使用
+    mcp_tools: [terminal, file_read, file_write, search_files, web_search, web_extract, code_exec, delegate]
+    default_workdir: "/workspace"
+    sandbox: true
+    max_concurrent_tasks: 3
 
 memory:               # → MemPalace 使用
   palace_path: "/data/palace"
-  backend: "pgvector"         # 生产用 pgvector
-  embedding_model: "embeddinggemma-300m"  # 多语言，100+ 语言支持
+  backend: "pgvector"
+  embedding_model: "embeddinggemma-300m"
 
   wings:
     users:
@@ -599,19 +574,21 @@ memory:               # → MemPalace 使用
       rooms: [diary, learned_expressions, mood_history]
     airi:
       rooms: [diary, game_progress, stream_history]
+    hermes:
+      rooms: [diary, task_history, deployments, code_snippets]
 
   knowledge_graph:
     enabled: true
-    auto_extract: true          # 自动从对话中提取实体关系
+    auto_extract: true
 
   mining:
-    auto_save: true             # 对话后自动保存
-    dedup_threshold: 0.9        # 去重阈值
+    auto_save: true
+    dedup_threshold: 0.9
 ```
 
 ---
 
-## 十、部署架构
+## 六、部署架构
 
 ```yaml
 # docker-compose.yml
@@ -639,7 +616,6 @@ services:
     environment:
       MEMPALACE_BACKEND: pgvector
       MEMPALACE_PGVECTOR_URL: "postgresql://postgres:***@postgres/fusion_db"
-    # MCP Server over stdio or SSE
 
   astrbot:
     image: soulter/astrbot:latest
@@ -653,6 +629,7 @@ services:
     environment:
       MCP_SERVER_ENABLED: "true"
       MEMPALACE_MCP_URL: "http://mempalace:8080"
+      HERMES_MCP_URL: "http://hermes:9090"
 
   maibot:
     image: maibot/maisaka:latest
@@ -679,6 +656,20 @@ services:
       ASTRBOT_MCP_URL: "http://astrbot:6196"
       MEMPALACE_MCP_URL: "http://mempalace:8080"
 
+  hermes:
+    image: nousresearch/hermes-agent:latest
+    depends_on: [astrbot, mempalace]
+    ports:
+      - "9090:9090"
+    volumes:
+      - hermes_data:/root/.hermes
+      - /var/run/docker.sock:/var/run/docker.sock  # 容器管理
+      - ./soul.yaml:/root/.hermes/soul.yaml:ro
+    environment:
+      ASTRBOT_MCP_URL: "http://astrbot:6196"
+      MEMPALACE_MCP_URL: "http://mempalace:8080"
+      HERMES_MCP_PORT: "9090"
+
 volumes:
   pg_data:
   redis_data:
@@ -686,11 +677,26 @@ volumes:
   astrbot_data:
   maibot_data:
   airi_data:
+  hermes_data:
 ```
 
 ---
 
-## 十一、实现路线图
+## 七、License 兼容性
+
+| 项目 | License | 兼容性 |
+|------|---------|--------|
+| AstrBot | AGPL-3.0 | ⚠️ 桥接层需独立模块，MCP 协议隔离 |
+| MaiBot | GPL-3.0 | ⚠️ 桥接层需独立模块，MCP 协议隔离 |
+| AIRI | MIT | ✅ |
+| Hermes | Custom (Nous Research) | ✅ |
+| MemPalace | MIT | ✅ |
+
+MCP 协议是进程间通信，不要求代码层面的融合，各项目保持独立 license。
+
+---
+
+## 八、实现路线图
 
 ### Phase 1: MemPalace 基础 (1-2 周)
 - [ ] 部署 MemPalace，配置 pgvector 后端
@@ -707,29 +713,26 @@ volumes:
 - [ ] MaiBot 推理引擎直连 MemPalace
 - [ ] 对话后自动保存到记忆宫殿
 - [ ] 知识图谱自动提取实体关系
-- [ ] 集成 AstrBot 技能/工具调用
+- [ ] 集成 AstrBot 决策中枢调度
 
-### Phase 4: AIRI 接入 (3-4 周)
-- [ ] AIRI 双桥接 (MaiBot + MemPalace)
+### Phase 4: Hermes 接入 (2-3 周)
+- [ ] Hermes MCP Server 实现 (暴露 8 个工具)
+- [ ] AstrBot SubAgentOrchestrator 注册 Hermes
+- [ ] HandoffTool 配置 (background_task=true)
+- [ ] 反向调用: Hermes → AstrBot.send_message()
+- [ ] 验证技术任务全流程: 用户指令 → AstrBot 决策 → Hermes 执行 → 结果回传
+- [ ] Hermes 翼楼配置 (task_history, deployments, code_snippets)
+
+### Phase 5: AIRI 接入 (3-4 周)
+- [ ] AIRI 桥接 (MaiBot + AstrBot + MemPalace)
 - [ ] TTS + 口型同步 + 表情系统
 - [ ] 游戏 Agent 日记写入 MemPalace
 - [ ] 直播场景打通
 
-### Phase 5: 深度优化 (持续)
+### Phase 6: 深度优化 (持续)
 - [ ] MemPalace 知识图谱自动推理
 - [ ] 跨翼楼隧道自动发现
 - [ ] 记忆衰减和重要性排序
 - [ ] 多 Agent 记忆隔离和共享策略
-
----
-
-## 十二、License 兼容性
-
-| 项目 | License | 兼容性 |
-|------|---------|--------|
-| AstrBot | 未明确 (大概率 MIT) | ✅ |
-| MaiBot | GPL-3.0 | ⚠️ 桥接层需独立模块，MCP 协议隔离 |
-| AIRI | MIT | ✅ |
-| MemPalace | MIT | ✅ |
-
-MCP 协议是进程间通信，不要求代码层面的融合，各项目保持独立 license。
+- [ ] AstrBot 决策路由优化 (基于任务类型自动选择最优 Agent)
+- [ ] Hermes 执行结果自动写入知识图谱
